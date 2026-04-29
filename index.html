@@ -1,503 +1,1419 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkverse - AI-Powered Claims Auditing Platform</title>
-    <meta name="description" content="Automate insurance claims auditing with AI. Reduce processing time, detect fraud, and ensure compliance with Checkverse.">
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                }
-            }
-        }
-    </script>
-    <style>
-        .gradient-text {
-            background: linear-gradient(180deg, #ffffff 0%, #71717a 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            padding-bottom: 0.1em;
-        }
-        .hero-glow {
-            background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 119, 198, 0.15), transparent);
-        }
-        .card-glow:hover {
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.03);
-        }
-        .subtle-border {
-            border-color: rgba(255, 255, 255, 0.08);
-        }
-        .text-balance {
-            text-wrap: balance;
-        }
-    </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Checkverse – The AI copilot for health claims auditing.</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F5F2EC;
+    --bg-2: #EFEAE1;
+    --ink: #0B0B0C;
+    --ink-2: #2A2A2D;
+    --ink-3: #5E5E63;
+    --ink-4: #9A9A9F;
+    --line: rgba(11,11,12,.09);
+    --line-2: rgba(11,11,12,.14);
+    --accent: #2F9C6A;
+    --accent-ink: #0B3D26;
+    --warn: #B7541E;
+    --paper: #FFFDF8;
+    --shadow-sm: 0 1px 0 rgba(11,11,12,.04), 0 1px 2px rgba(11,11,12,.04);
+    --shadow-md: 0 1px 0 rgba(11,11,12,.05), 0 8px 24px -8px rgba(11,11,12,.12);
+    --shadow-lg: 0 2px 0 rgba(11,11,12,.04), 0 24px 48px -20px rgba(11,11,12,.18);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
+    font-feature-settings: "ss01","cv11";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  .serif { font-family: 'Instrument Serif', 'Times New Roman', serif; font-weight: 400; letter-spacing: -0.01em; }
+  .mono { font-family: 'Geist Mono', ui-monospace, monospace; font-feature-settings: "ss01"; }
+  .italic { font-style: italic; }
+  ::selection { background: var(--accent); color: white; }
+
+  .grain::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1000;
+    opacity: .35;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.04  0 0 0 0 0.04  0 0 0 0 0.04  0 0 0 0.18 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 28px; }
+  @media (max-width: 680px) { .wrap { padding: 0 18px; } }
+
+  .chip {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 10px; border: 1px solid var(--line-2); border-radius: 999px;
+    font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    background: rgba(255,253,248,.6); backdrop-filter: blur(6px);
+  }
+  .chip .dot {
+    width: 6px; height: 6px; border-radius: 999px; background: var(--accent);
+    box-shadow: 0 0 0 0 rgba(47,156,106,.45);
+    animation: pulse 2.2s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(47,156,106,.45); }
+    70% { box-shadow: 0 0 0 10px rgba(47,156,106,0); }
+    100% { box-shadow: 0 0 0 0 rgba(47,156,106,0); }
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+    padding: 12px 18px; border-radius: 999px;
+    font-size: 14px; font-weight: 500; letter-spacing: -0.01em;
+    transition: transform .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
+    cursor: pointer; text-decoration: none; border: 1px solid transparent;
+  }
+  .btn-primary { background: var(--ink); color: var(--paper); }
+  .btn-primary:hover { background: #1a1a1d; transform: translateY(-1px); }
+  .btn-ghost { color: var(--ink); border-color: var(--line-2); background: transparent; }
+  .btn-ghost:hover { background: rgba(11,11,12,.04); }
+
+  .marquee { overflow: hidden; position: relative; mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent); }
+  .marquee-track { display: flex; width: max-content; gap: 72px; animation: scroll-x 40s linear infinite; }
+  @keyframes scroll-x { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  @keyframes caret-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  @keyframes rise { from { transform: translateY(16px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .9s ease, transform .9s cubic-bezier(.22,.61,.36,1); }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  .ulink { position: relative; color: var(--ink); text-decoration: none; }
+  .ulink::after {
+    content:""; position:absolute; left:0; right:0; bottom:-2px; height:1px;
+    background: currentColor; transform-origin: right;
+    transform: scaleX(1);
+    transition: transform .35s cubic-bezier(.22,.61,.36,1);
+  }
+  .ulink:hover::after { transform: scaleX(0); transform-origin: right; }
+
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: rgba(11,11,12,.2); border-radius: 999px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+
+  .card { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-md); }
+  .card-sm { border-radius: 10px; }
+
+  .tab-btn {
+    padding: 10px 14px; border-radius: 999px; font-size: 13px;
+    border: 1px solid transparent; background: transparent; cursor: pointer; color: var(--ink-3);
+    transition: all .2s ease; font-family: inherit;
+  }
+  .tab-btn[data-active="true"] { background: var(--ink); color: var(--paper); }
+  .tab-btn:not([data-active="true"]):hover { color: var(--ink); background: rgba(11,11,12,.04); }
+
+  .bar { height: 6px; border-radius: 999px; background: rgba(11,11,12,.08); overflow: hidden; }
+  .bar > span { display: block; height: 100%; background: var(--accent); border-radius: 999px; transition: width 1.2s cubic-bezier(.22,.61,.36,1); }
+
+  @media (max-width: 900px) { .hide-md { display: none !important; } }
+</style>
 </head>
-<body class="font-sans antialiased bg-[#0a0a0a] text-white">
+<body class="grain">
+<div id="root"></div>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full bg-[#0a0a0a]/80 backdrop-blur-xl border-b subtle-border z-50">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="flex justify-between items-center h-14">
-                <div class="flex items-center gap-2">
-                    <svg class="w-6 h-6 text-white" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="32" height="32" rx="8" fill="currentColor"/>
-                        <path d="M9 16L14 21L23 11" stroke="#0a0a0a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span class="text-sm font-semibold text-white">Checkverse</span>
-                </div>
-                <div class="hidden md:flex items-center gap-6">
-                    <a href="#features" class="text-sm text-zinc-400 hover:text-white transition-colors">Features</a>
-                    <a href="#how-it-works" class="text-sm text-zinc-400 hover:text-white transition-colors">How It Works</a>
-                    <a href="#use-cases" class="text-sm text-zinc-400 hover:text-white transition-colors">Use Cases</a>
-                    <a href="#security" class="text-sm text-zinc-400 hover:text-white transition-colors">Security</a>
-                </div>
-                <div class="flex items-center gap-3">
-                    <a href="https://app.checkverse.io/dashboard" class="text-sm text-zinc-400 hover:text-white transition-colors">
-                        Sign in
-                    </a>
-                    <a href="#contact" class="text-sm px-3 py-1.5 bg-white text-black font-medium rounded-md hover:bg-zinc-200 transition-colors">
-                        Get Started
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
 
-    <!-- Hero Section -->
-    <section class="pt-32 pb-24 hero-glow">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold leading-[1.1] tracking-tight mb-6 gradient-text text-balance">
-                Built to make claims auditing extraordinarily efficient.
-            </h1>
-            <p class="text-lg text-zinc-400 max-w-2xl mx-auto mb-10 text-balance">
-                Checkverse is the AI-powered platform that automates document analysis, detects fraud, and ensures compliance—in seconds, not hours.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                <a href="#contact" class="inline-flex items-center justify-center px-5 py-2.5 bg-white text-black text-sm font-medium rounded-lg hover:bg-zinc-200 transition-colors">
-                    Request a Demo
-                </a>
-                <a href="#features" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-zinc-300 rounded-lg border border-zinc-800 hover:bg-zinc-900 hover:border-zinc-700 transition-colors">
-                    Learn more →
-                </a>
-            </div>
-        </div>
-    </section>
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
 
-    <!-- Trusted By -->
-    <section class="py-16 border-y subtle-border">
-        <div class="max-w-6xl mx-auto px-6">
-            <p class="text-center text-sm text-zinc-500 mb-8">Trusted by insurance companies to process claims faster</p>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-                <div class="text-center">
-                    <div class="text-3xl font-semibold text-white mb-1">90%</div>
-                    <p class="text-sm text-zinc-500">Faster processing</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-semibold text-white mb-1">60%</div>
-                    <p class="text-sm text-zinc-500">Cost reduction</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-semibold text-white mb-1">99%</div>
-                    <p class="text-sm text-zinc-500">Compliance rate</p>
-                </div>
-                <div class="text-center">
-                    <div class="text-3xl font-semibold text-white mb-1">3x</div>
-                    <p class="text-sm text-zinc-500">Fraud detection</p>
-                </div>
-            </div>
-        </div>
-    </section>
+function Mark({ size = 22, color = "currentColor" }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 20 20" fill="none" style={{ display: "block" }}>
+      <path d="M10 18L6.10262 10.2044L9.06061 6.78906L10 8.66667L13.3335 2H18L10 18Z" fill={color}/>
+      <path d="M8.46293 5.59375L5.50493 9.00911L2 2H6.66648L8.46293 5.59375Z" fill={color}/>
+    </svg>
+  );
+}
 
-    <!-- Features -->
-    <section id="features" class="py-24">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="max-w-2xl mb-16">
-                <h2 class="text-3xl font-semibold mb-4 gradient-text">Intelligent claims processing</h2>
-                <p class="text-zinc-400">
-                    Checkverse brings the power of AI to every stage of claims auditing, from document intake to final decision.
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="group p-6 rounded-xl bg-zinc-900/50 border subtle-border card-glow transition-all hover:bg-zinc-900/80">
-                    <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center mb-4">
-                        <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-base font-medium text-white mb-2">Document Analysis</h3>
-                    <p class="text-sm text-zinc-500">
-                        Automatically extract and validate data from invoices, prescriptions, and reports.
-                    </p>
-                </div>
-                
-                <div class="group p-6 rounded-xl bg-zinc-900/50 border subtle-border card-glow transition-all hover:bg-zinc-900/80">
-                    <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center mb-4">
-                        <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-base font-medium text-white mb-2">Compliance Validation</h3>
-                    <p class="text-sm text-zinc-500">
-                        Verify fiscal requirements, tax codes, and regulatory compliance automatically.
-                    </p>
-                </div>
-                
-                <div class="group p-6 rounded-xl bg-zinc-900/50 border subtle-border card-glow transition-all hover:bg-zinc-900/80">
-                    <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center mb-4">
-                        <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-base font-medium text-white mb-2">Fraud Detection</h3>
-                    <p class="text-sm text-zinc-500">
-                        Identify red flags and inconsistencies before they become costly.
-                    </p>
-                </div>
-                
-                <div class="group p-6 rounded-xl bg-zinc-900/50 border subtle-border card-glow transition-all hover:bg-zinc-900/80">
-                    <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center mb-4">
-                        <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-base font-medium text-white mb-2">Policy Matching</h3>
-                    <p class="text-sm text-zinc-500">
-                        Automatically verify coverage, limits, and exclusions against each claim.
-                    </p>
-                </div>
-                
-                <div class="group p-6 rounded-xl bg-zinc-900/50 border subtle-border card-glow transition-all hover:bg-zinc-900/80">
-                    <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center mb-4">
-                        <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-base font-medium text-white mb-2">Audit Trail</h3>
-                    <p class="text-sm text-zinc-500">
-                        Complete version history with full traceability for regulators.
-                    </p>
-                </div>
-                
-                <div class="group p-6 rounded-xl bg-zinc-900/50 border subtle-border card-glow transition-all hover:bg-zinc-900/80">
-                    <div class="w-10 h-10 rounded-lg bg-zinc-800 flex items-center justify-center mb-4">
-                        <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-base font-medium text-white mb-2">Multi-Tenant</h3>
-                    <p class="text-sm text-zinc-500">
-                        Enterprise-grade architecture with complete data isolation.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
+function Wordmark({ size = 22 }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 9 }}>
+      <Mark size={size} />
+      <span className="serif" style={{ fontSize: size + 6, lineHeight: 1, letterSpacing: "-0.02em" }}>
+        Checkverse
+      </span>
+    </div>
+  );
+}
 
-    <!-- How It Works -->
-    <section id="how-it-works" class="py-24 border-t subtle-border">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="max-w-2xl mb-16">
-                <h2 class="text-3xl font-semibold mb-4 gradient-text">How it works</h2>
-                <p class="text-zinc-400">
-                    From document upload to decision in seconds—not hours.
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-8">
-                <div>
-                    <div class="w-8 h-8 rounded-full bg-white text-black text-sm font-semibold flex items-center justify-center mb-4">1</div>
-                    <h3 class="text-lg font-medium text-white mb-2">Upload Documents</h3>
-                    <p class="text-sm text-zinc-500">
-                        Submit claim documents in any format—PDFs, images, or scanned files. Batch upload multiple files at once.
-                    </p>
-                </div>
-                
-                <div>
-                    <div class="w-8 h-8 rounded-full bg-white text-black text-sm font-semibold flex items-center justify-center mb-4">2</div>
-                    <h3 class="text-lg font-medium text-white mb-2">AI Analysis</h3>
-                    <p class="text-sm text-zinc-500">
-                        Our AI extracts data, validates compliance, checks policy coverage, and identifies red flags automatically.
-                    </p>
-                </div>
-                
-                <div>
-                    <div class="w-8 h-8 rounded-full bg-white text-black text-sm font-semibold flex items-center justify-center mb-4">3</div>
-                    <h3 class="text-lg font-medium text-white mb-2">Decision & Audit</h3>
-                    <p class="text-sm text-zinc-500">
-                        Receive a clear verdict with detailed reasoning. Agents can review, override if needed, and finalize.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
+function useReveal() {
+  useEffect(() => {
+    const els = document.querySelectorAll(".reveal");
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
+}
 
-    <!-- Use Cases -->
-    <section id="use-cases" class="py-24 border-t subtle-border">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="max-w-2xl mb-16">
-                <h2 class="text-3xl font-semibold mb-4 gradient-text">Built for all insurance lines</h2>
-                <p class="text-zinc-400">
-                    Checkverse adapts to your specific insurance domain and document types.
-                </p>
-            </div>
-            
-            <div class="grid md:grid-cols-3 gap-4">
-                <div class="p-6 rounded-xl bg-zinc-900/50 border subtle-border">
-                    <h3 class="text-lg font-medium text-white mb-4">Health Insurance</h3>
-                    <ul class="text-sm text-zinc-500 space-y-3">
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Medical invoice validation
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Prescription verification
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Pre-existing condition checks
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Treatment appropriateness
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="p-6 rounded-xl bg-zinc-900/50 border subtle-border">
-                    <h3 class="text-lg font-medium text-white mb-4">Property Insurance</h3>
-                    <ul class="text-sm text-zinc-500 space-y-3">
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Damage assessment reports
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Repair estimate validation
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Photo evidence analysis
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Coverage limit verification
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="p-6 rounded-xl bg-zinc-900/50 border subtle-border">
-                    <h3 class="text-lg font-medium text-white mb-4">Auto Insurance</h3>
-                    <ul class="text-sm text-zinc-500 space-y-3">
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Accident report processing
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Repair invoice verification
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Third-party liability checks
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <svg class="w-4 h-4 text-zinc-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                            </svg>
-                            Rental car coverage validation
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Security -->
-    <section id="security" class="py-24 border-t subtle-border">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="grid lg:grid-cols-2 gap-16 items-start">
-                <div>
-                    <h2 class="text-3xl font-semibold mb-4 gradient-text">Enterprise-grade security</h2>
-                    <p class="text-zinc-400 mb-8">
-                        Built from the ground up with security and compliance at its core. Your data is protected at every layer.
-                    </p>
-                    
-                    <div class="space-y-6">
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0 mt-0.5">
-                                <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="text-sm font-medium text-white mb-1">Data Encryption</h3>
-                                <p class="text-sm text-zinc-500">End-to-end encryption for all data in transit and at rest.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0 mt-0.5">
-                                <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="text-sm font-medium text-white mb-1">Multi-Tenant Isolation</h3>
-                                <p class="text-sm text-zinc-500">Complete data separation with role-based access control.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0 mt-0.5">
-                                <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="text-sm font-medium text-white mb-1">Full Audit Trail</h3>
-                                <p class="text-sm text-zinc-500">Every action logged with timestamps and user attribution.</p>
-                            </div>
-                        </div>
-                        
-                        <div class="flex items-start gap-4">
-                            <div class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center shrink-0 mt-0.5">
-                                <svg class="w-4 h-4 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                                </svg>
-                            </div>
-                            <div>
-                                <h3 class="text-sm font-medium text-white mb-1">Regulatory Compliance</h3>
-                                <p class="text-sm text-zinc-500">Built to meet insurance industry requirements and data protection standards.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="p-6 rounded-xl bg-zinc-900/50 border subtle-border">
-                    <div class="flex items-center gap-2 mb-6">
-                        <svg class="w-5 h-5 text-zinc-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                        </svg>
-                        <span class="text-sm font-medium text-white">Security Verified</span>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
-                            <span class="text-sm text-zinc-400">Data Encryption</span>
-                            <span class="text-sm text-zinc-300">AES-256</span>
-                        </div>
-                        <div class="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
-                            <span class="text-sm text-zinc-400">Access Control</span>
-                            <span class="text-sm text-zinc-300">RBAC</span>
-                        </div>
-                        <div class="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
-                            <span class="text-sm text-zinc-400">Audit Logging</span>
-                            <span class="text-sm text-zinc-300">Full History</span>
-                        </div>
-                        <div class="flex items-center justify-between p-3 rounded-lg bg-zinc-800/50">
-                            <span class="text-sm text-zinc-400">Data Isolation</span>
-                            <span class="text-sm text-zinc-300">Per-Tenant</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA -->
-    <section id="contact" class="py-24 border-t subtle-border">
-        <div class="max-w-2xl mx-auto px-6 text-center">
-            <h2 class="text-3xl font-semibold mb-4 gradient-text">Try Checkverse now</h2>
-            <p class="text-zinc-400 mb-8">
-                See how Checkverse can help your organization process claims faster, reduce fraud, and stay compliant.
-            </p>
-            <a href="mailto:hello@reverse.wtf?subject=Checkverse%20Demo%20Request" class="inline-flex items-center justify-center px-5 py-2.5 bg-white text-black text-sm font-medium rounded-lg hover:bg-zinc-200 transition-colors">
-                Get in Touch
+function Nav() {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 10);
+    h();
+    window.addEventListener("scroll", h);
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+  return (
+    <nav style={{
+      position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
+      borderBottom: scrolled ? "1px solid var(--line)" : "1px solid transparent",
+      background: scrolled ? "rgba(245,242,236,0.82)" : "transparent",
+      backdropFilter: scrolled ? "blur(14px) saturate(1.2)" : "none",
+      transition: "all .25s ease",
+    }}>
+      <div className="wrap" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 64 }}>
+        <Wordmark size={20} />
+        <div className="hide-md" style={{ display: "flex", gap: 28, alignItems: "center" }}>
+          {[["Product","#product"],["How it works","#how"],["Use cases","#cases"],["Security","#security"]].map(([t,h]) => (
+            <a key={h} href={h} style={{ color: "var(--ink-3)", textDecoration: "none", fontSize: 14 }}
+               onMouseEnter={(e) => e.currentTarget.style.color = "var(--ink)"}
+               onMouseLeave={(e) => e.currentTarget.style.color = "var(--ink-3)"}>
+              {t}
             </a>
+          ))}
         </div>
+        <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          <a href="https://app.checkverse.io/dashboard" className="hide-md" style={{ color: "var(--ink-3)", textDecoration: "none", fontSize: 14 }}>
+            Sign in
+          </a>
+          <a href="#contact" className="btn btn-primary">Request demo <span style={{opacity:.6}}>→</span></a>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
+function Hero() {
+  const headline = "Every health claim, audited before your coffee cools.";
+  return (
+    <section style={{ position: "relative", paddingTop: 140, paddingBottom: 80, overflow: "hidden" }}>
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none",
+        background: "radial-gradient(80% 50% at 85% 10%, rgba(47,156,106,.10), transparent 60%), radial-gradient(60% 40% at 10% 40%, rgba(183,84,30,.05), transparent 70%)",
+      }} />
+      <div className="wrap" style={{ position: "relative" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1.05fr) minmax(0,.95fr)", gap: 48, alignItems: "start" }} className="hero-grid">
+          <div style={{ paddingTop: 20 }}>
+            <div className="chip reveal" style={{ marginBottom: 28 }}>
+              <span className="dot" />
+              <span style={{ color: "var(--ink-2)" }}>The AI copilot for health claims</span>
+            </div>
+            <h1 className="serif reveal" style={{
+              fontSize: "clamp(44px,6.2vw,88px)", lineHeight: 0.98, letterSpacing: "-0.025em",
+              margin: "0 0 28px 0", textWrap: "balance",
+            }}>
+              {headline.split(" ").map((w, i) => {
+                const isAccent = /coffee|cools|audited/.test(w.replace(/[^a-z]/gi,""));
+                return (
+                  <span key={i} style={{ fontStyle: isAccent ? "italic" : "normal" }}>
+                    {w}{" "}
+                  </span>
+                );
+              })}
+            </h1>
+            <p className="reveal" style={{
+              fontSize: 19, lineHeight: 1.45, color: "var(--ink-3)",
+              margin: "0 0 36px 0", maxWidth: 540,
+            }}>
+              Your agents upload the medical receipts, prescriptions, and reports. Checkverse reads everything, cross-checks against the policy, and returns a structured verdict — with citations.{" "}
+              <span style={{ color: "var(--ink)" }}>In under a minute, not thirty.</span> The agent always has the last word.
+            </p>
+            <div className="reveal" style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 48 }}>
+              <a href="#contact" className="btn btn-primary">Book a demo <span style={{opacity:.6}}>→</span></a>
+              <a href="#demo" className="btn btn-ghost">Play the demo</a>
+            </div>
+            <div className="reveal" style={{ display: "flex", gap: 28, alignItems: "center", color: "var(--ink-3)", fontSize: 12 }}>
+              <span className="mono" style={{ letterSpacing: ".06em" }}>SOC 2 TYPE II</span>
+              <span style={{ width: 3, height: 3, background: "var(--ink-4)", borderRadius: 99 }} />
+              <span className="mono" style={{ letterSpacing: ".06em" }}>HIPAA READY</span>
+              <span style={{ width: 3, height: 3, background: "var(--ink-4)", borderRadius: 99 }} />
+              <span className="mono" style={{ letterSpacing: ".06em" }}>ISO 27001</span>
+            </div>
+          </div>
+          <HeroFragments />
+        </div>
+      </div>
+      <style>{`
+        @media (max-width: 980px) { .hero-grid { grid-template-columns: 1fr !important; } }
+      `}</style>
     </section>
+  );
+}
 
-    <!-- Footer -->
-    <footer class="py-12 border-t subtle-border">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
-                <div>
-                    <h4 class="text-sm font-medium text-white mb-4">Product</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#features" class="text-sm text-zinc-500 hover:text-white transition-colors">Features</a></li>
-                        <li><a href="#how-it-works" class="text-sm text-zinc-500 hover:text-white transition-colors">How It Works</a></li>
-                        <li><a href="#use-cases" class="text-sm text-zinc-500 hover:text-white transition-colors">Use Cases</a></li>
-                        <li><a href="#security" class="text-sm text-zinc-500 hover:text-white transition-colors">Security</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-sm font-medium text-white mb-4">Company</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-sm text-zinc-500 hover:text-white transition-colors">About</a></li>
-                        <li><a href="#contact" class="text-sm text-zinc-500 hover:text-white transition-colors">Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-sm font-medium text-white mb-4">Legal</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#" class="text-sm text-zinc-500 hover:text-white transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="text-sm text-zinc-500 hover:text-white transition-colors">Terms of Service</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-sm font-medium text-white mb-4">Connect</h4>
-                    <ul class="space-y-3">
-                        <li><a href="https://app.checkverse.io/dashboard" class="text-sm text-zinc-500 hover:text-white transition-colors">Sign in ↗</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t subtle-border">
-                <div class="flex items-center gap-2 mb-4 md:mb-0">
-                    <svg class="w-5 h-5 text-white" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect width="32" height="32" rx="8" fill="currentColor"/>
-                        <path d="M9 16L14 21L23 11" stroke="#0a0a0a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span class="text-sm font-medium text-white">Checkverse</span>
-                </div>
-                <p class="text-sm text-zinc-600">© 2026 Checkverse. All rights reserved.</p>
-            </div>
+function HeroFragments() {
+  const [pct, setPct] = useState(0);
+  const [verdict, setVerdict] = useState(false);
+  const [extracted, setExtracted] = useState(0);
+
+  useEffect(() => {
+    let raf;
+    const loop = () => {
+      setPct(p => { if (p >= 100) return 100; return Math.min(100, p + 1.4); });
+      raf = requestAnimationFrame(loop);
+    };
+    const t1 = setTimeout(loop, 400);
+    const t2 = setTimeout(() => setVerdict(true), 3600);
+    const t3 = setInterval(() => setExtracted(x => (x + 1) % 5), 1200);
+    return () => { cancelAnimationFrame(raf); clearTimeout(t1); clearTimeout(t2); clearInterval(t3); };
+  }, []);
+
+  const extractedFields = [
+    { k: "Patient", v: "Gj. Fishta" },
+    { k: "Provider", v: "QM Bul. Nënë Tereza" },
+    { k: "Procedure", v: "CPT 99213" },
+    { k: "Amount", v: "€ 842.00" },
+    { k: "Date", v: "Apr 19, 2026" },
+  ];
+
+  return (
+    <div style={{ position: "relative", height: 620, minHeight: 500 }}>
+      <div aria-hidden style={{
+        position: "absolute", inset: -40,
+        backgroundImage: "radial-gradient(circle, rgba(11,11,12,.11) 1px, transparent 1px)",
+        backgroundSize: "22px 22px",
+        maskImage: "radial-gradient(ellipse 60% 50% at 55% 55%, black, transparent 75%)",
+        WebkitMaskImage: "radial-gradient(ellipse 60% 50% at 55% 55%, black, transparent 75%)",
+      }} />
+
+      {/* Document card */}
+      <div className="card reveal" style={{ position: "absolute", top: 20, left: -20, width: 240, padding: 16, transform: "rotate(-4deg)", zIndex: 1 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+          <span className="mono" style={{ fontSize: 10, color: "var(--ink-4)", letterSpacing: ".08em" }}>INVOICE_8842.PDF</span>
+          <span style={{ fontSize: 10, color: "var(--ink-4)" }}>2 pages</span>
         </div>
-    </footer>
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {[100,78,92,65,88,40].map((w, i) => (
+            <div key={i} style={{
+              height: 6, borderRadius: 2, width: `${w}%`,
+              background: i === (extracted % 6) ? "var(--accent)" : "rgba(11,11,12,.14)",
+              transition: "background .3s",
+            }} />
+          ))}
+          <div style={{ height: 1, background: "var(--line)", margin: "6px 0" }} />
+          {[55,82,45,70].map((w, i) => (
+            <div key={i} style={{ height: 6, borderRadius: 2, width: `${w}%`, background: "rgba(11,11,12,.14)" }} />
+          ))}
+        </div>
+      </div>
 
+      {/* Extraction card */}
+      <div className="card" style={{ position: "absolute", top: 60, right: 30, width: 300, padding: 18, zIndex: 3 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <div style={{ width: 8, height: 8, borderRadius: 99, background: "var(--accent)", boxShadow: "0 0 0 4px rgba(47,156,106,.15)" }} />
+            <span className="mono" style={{ fontSize: 11, letterSpacing: ".08em" }}>EXTRACTING</span>
+          </div>
+          <span className="mono" style={{ fontSize: 10, color: "var(--ink-4)" }}>{Math.round(pct)}%</span>
+        </div>
+        <div className="bar" style={{ marginBottom: 16 }}>
+          <span style={{ width: `${pct}%` }} />
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {extractedFields.map((f, i) => {
+            const shown = pct > (i + 1) * 18;
+            return (
+              <div key={f.k} style={{
+                display: "flex", justifyContent: "space-between", alignItems: "baseline",
+                padding: "6px 10px", borderRadius: 8,
+                background: shown ? "rgba(47,156,106,.08)" : "transparent",
+                opacity: shown ? 1 : 0.35,
+                transform: shown ? "translateY(0)" : "translateY(4px)",
+                transition: "all .35s",
+              }}>
+                <span style={{ fontSize: 11, color: "var(--ink-3)" }}>{f.k}</span>
+                <span className="mono" style={{ fontSize: 12, color: "var(--ink)" }}>{shown ? f.v : "···"}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Verdict card */}
+      <div className="card" style={{
+        position: "absolute", bottom: 40, right: -10, width: 260, padding: 18,
+        transform: "rotate(2deg)", zIndex: 4,
+        borderColor: verdict ? "rgba(47,156,106,.35)" : "var(--line)",
+        transition: "border-color .6s",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+          <div style={{
+            width: 36, height: 36, borderRadius: 99, display: "grid", placeItems: "center",
+            background: verdict ? "var(--accent)" : "rgba(11,11,12,.08)",
+            transition: "background .6s",
+          }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12l4 4L19 7" stroke={verdict ? "white" : "var(--ink-4)"}
+                strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"
+                style={{ strokeDasharray: 40, strokeDashoffset: verdict ? 0 : 40, transition: "stroke-dashoffset .8s ease, stroke .3s" }}/>
+            </svg>
+          </div>
+          <div>
+            <div className="mono" style={{ fontSize: 10, color: "var(--ink-4)", letterSpacing: ".08em" }}>VERDICT</div>
+            <div className="serif" style={{ fontSize: 22, lineHeight: 1.1 }}>{verdict ? "Approve" : "Thinking…"}</div>
+          </div>
+        </div>
+        <div style={{ fontSize: 12, color: "var(--ink-3)", lineHeight: 1.45 }}>
+          Receipt matches policy C-247. Within territory, clear of waiting period. € 2,840 of annual limit remaining. No red flags.
+        </div>
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 12, paddingTop: 12, borderTop: "1px solid var(--line)" }}>
+          <span className="mono" style={{ fontSize: 10, color: "var(--ink-4)" }}>CONFIDENCE</span>
+          <span className="mono" style={{ fontSize: 12, color: verdict ? "var(--accent-ink)" : "var(--ink-3)", fontWeight: 600 }}>
+            {verdict ? "94%" : "—"}
+          </span>
+        </div>
+      </div>
+
+      {/* Flag card */}
+      <div className="card card-sm" style={{ position: "absolute", bottom: 180, left: 10, width: 200, padding: 12, zIndex: 5, transform: "rotate(-2deg)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+          <div style={{ width: 6, height: 6, borderRadius: 99, background: "var(--warn)" }} />
+          <span className="mono" style={{ fontSize: 10, color: "var(--warn)", letterSpacing: ".08em" }}>FLAG · LOW</span>
+        </div>
+        <div style={{ fontSize: 12, color: "var(--ink-2)", lineHeight: 1.4 }}>
+          Provider fiscal code valid, but stamp on receipt 3 is missing. Agent review recommended.
+        </div>
+      </div>
+
+      {/* Policy chip */}
+      <div className="card card-sm" style={{
+        position: "absolute", top: 350, left: 130, padding: "8px 12px",
+        zIndex: 5, display: "flex", alignItems: "center", gap: 8, transform: "rotate(3deg)",
+      }}>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+          <path d="M5 12l4 4L19 7" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+        <span className="mono" style={{ fontSize: 11 }}>Policy C-247 · active</span>
+      </div>
+
+      {/* Audit line */}
+      <div style={{
+        position: "absolute", bottom: 10, left: 0, right: 0,
+        display: "flex", gap: 8, alignItems: "center",
+        padding: "6px 12px", fontSize: 11, color: "var(--ink-4)", zIndex: 2,
+      }}>
+        <span className="mono">14:02:18</span>
+        <span>·</span>
+        <span>agent: auto</span>
+        <span>·</span>
+        <span>claim 8842 audited</span>
+        <span style={{ flex: 1, height: 1, background: "var(--line)" }} />
+        <span className="mono">0.42s</span>
+      </div>
+    </div>
+  );
+}
+
+function TrustRow() {
+  const logos = ["NORTHVELT HEALTH","ATLAS MUTUAL","HEARTWOOD CARE","MERIDIAN HEALTH","CAPE BOND","PARAGON HEALTH","SENTINEL CO.","ARCATA BENEFITS"];
+  return (
+    <section style={{ padding: "48px 0", borderTop: "1px solid var(--line)", borderBottom: "1px solid var(--line)" }}>
+      <div className="wrap" style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", flexWrap: "wrap", gap: 12 }}>
+          <p className="mono" style={{ fontSize: 11, letterSpacing: ".1em", color: "var(--ink-4)", margin: 0 }}>
+            → BUILT WITH HEALTH INSURERS · POWERED BY GOOGLE VERTEX AI
+          </p>
+          <a href="#product" className="ulink" style={{ fontSize: 13, color: "var(--ink-3)" }}>See how it works →</a>
+        </div>
+        <div className="marquee">
+          <div className="marquee-track">
+            {[...logos, ...logos].map((l, i) => (
+              <div key={i} className="serif" style={{ fontSize: 24, color: "var(--ink-2)", whiteSpace: "nowrap", letterSpacing: "-0.02em", opacity: .7 }}>
+                {l}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function useCountUp(target, active, duration = 1400) {
+  const [n, setN] = useState(0);
+  useEffect(() => {
+    if (!active) return;
+    let start, raf;
+    const step = (t) => {
+      if (!start) start = t;
+      const p = Math.min(1, (t - start) / duration);
+      const eased = 1 - Math.pow(1 - p, 3);
+      setN(target * eased);
+      if (p < 1) raf = requestAnimationFrame(step);
+    };
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [active, target, duration]);
+  return n;
+}
+
+function StatBlock({ value, suffix, label, sub, active, format = (n) => Math.round(n) }) {
+  const n = useCountUp(value, active);
+  return (
+    <div style={{ padding: "24px 0" }}>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 4 }}>
+        <span className="serif" style={{ fontSize: "clamp(56px,7vw,96px)", lineHeight: 0.9, letterSpacing: "-0.03em" }}>
+          {format(n)}
+        </span>
+        <span className="serif italic" style={{ fontSize: "clamp(32px,4vw,52px)", color: "var(--ink-3)" }}>{suffix}</span>
+      </div>
+      <div style={{ marginTop: 14, fontSize: 15, color: "var(--ink-2)", maxWidth: 260 }}>{label}</div>
+      <div className="mono" style={{ marginTop: 6, fontSize: 11, color: "var(--ink-4)", letterSpacing: ".06em" }}>{sub}</div>
+    </div>
+  );
+}
+
+function Stats() {
+  const ref = useRef(null);
+  const [active, setActive] = useState(false);
+  useEffect(() => {
+    if (!ref.current) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => { if (e.isIntersecting) setActive(true); });
+    }, { threshold: 0.3 });
+    io.observe(ref.current);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <section ref={ref} style={{ padding: "96px 0", borderBottom: "1px solid var(--line)" }}>
+      <div className="wrap">
+        <div style={{ maxWidth: 640, marginBottom: 40 }}>
+          <p className="mono" style={{ fontSize: 11, letterSpacing: ".1em", color: "var(--ink-4)", margin: "0 0 12px 0" }}>
+            02 · THE NUMBERS
+          </p>
+          <h2 className="serif reveal" style={{ fontSize: "clamp(36px,4.8vw,60px)", margin: 0, lineHeight: 1.02, letterSpacing: "-0.02em" }}>
+            Thirty minutes of reading, <span className="italic">compressed into one.</span>
+          </h2>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0 }} className="stats-grid">
+          <StatBlock value={30} suffix="×" label="Faster than manual audit" sub="~1 MIN VS 15–30 MIN" active={active} />
+          <StatBlock value={92} suffix="%" label="Agreement with senior auditors" sub="BLIND REVIEW · Q1 2026" active={active} />
+          <StatBlock value={7} suffix="/7" label="Audit dimensions per claim" sub="DOCUMENTS · POLICY · CLINICAL · +4" active={active} />
+          <StatBlock value={100} suffix="%" label="Verdicts reviewable by humans" sub="COPILOT · NEVER AUTOPILOT" active={active} />
+        </div>
+      </div>
+      <style>{`
+        @media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2,1fr) !important; } }
+        @media (max-width: 560px) { .stats-grid { grid-template-columns: 1fr !important; } }
+      `}</style>
+    </section>
+  );
+}
+
+function StatusPill({ s }) {
+  const cfg = {
+    approve:     { bg: "rgba(47,156,106,.12)", ink: "var(--accent-ink)", dot: "var(--accent)", t: "Approve" },
+    partial:     { bg: "rgba(183,84,30,.10)", ink: "var(--warn)", dot: "var(--warn)", t: "Partial deny" },
+    deny:        { bg: "rgba(183,84,30,.14)", ink: "var(--warn)", dot: "var(--warn)", t: "Deny" },
+    investigate: { bg: "rgba(11,11,12,.06)", ink: "var(--ink-2)", dot: "var(--ink-3)", t: "Investigate" },
+    admin:       { bg: "rgba(11,11,12,.06)", ink: "var(--ink-2)", dot: "var(--ink-3)", t: "Admin hold" },
+    incomplete:  { bg: "rgba(11,11,12,.06)", ink: "var(--ink-3)", dot: "var(--ink-4)", t: "Incomplete" },
+    verified:    { bg: "rgba(47,156,106,.12)", ink: "var(--accent-ink)", dot: "var(--accent)", t: "Verified" },
+  }[s];
+  return (
+    <span style={{
+      display: "inline-flex", alignItems: "center", gap: 6,
+      padding: "3px 10px", borderRadius: 99, background: cfg.bg, color: cfg.ink, fontSize: 11, fontWeight: 500,
+    }}>
+      <span style={{ width: 6, height: 6, borderRadius: 99, background: cfg.dot }} />
+      {cfg.t}
+    </span>
+  );
+}
+
+function AppChrome({ title, children, accent }) {
+  return (
+    <div className="card" style={{ padding: 0, overflow: "hidden", boxShadow: "0 2px 0 rgba(11,11,12,.04), 0 24px 48px -20px rgba(11,11,12,.18)" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderBottom: "1px solid var(--line)", background: "rgba(11,11,12,.02)" }}>
+        <div style={{ display: "flex", gap: 6 }}>
+          <span style={{ width: 10, height: 10, borderRadius: 99, background: "#E66B6B" }} />
+          <span style={{ width: 10, height: 10, borderRadius: 99, background: "#E5B33F" }} />
+          <span style={{ width: 10, height: 10, borderRadius: 99, background: "#6FAE5E" }} />
+        </div>
+        <div style={{ flex: 1, display: "flex", justifyContent: "center" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "4px 12px", borderRadius: 6, background: "rgba(11,11,12,.04)", fontSize: 11 }} className="mono">
+            <Mark size={10} /> <span style={{ color: "var(--ink-3)" }}>app.checkverse.io / {title}</span>
+          </div>
+        </div>
+        <span className="mono" style={{ fontSize: 10, color: "var(--ink-4)" }}>{accent}</span>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function InboxScreen() {
+  const rows = [
+    { id: "CV-8842", claim: "Outpatient visit",      amt: "€ 842.00",   p: "Gj. Fishta · POL-C247", status: "approve",     t: "14:02" },
+    { id: "CV-8841", claim: "Prescription refill",   amt: "€ 128.40",   p: "J. Okafor · POL-C118",  status: "approve",     t: "14:02" },
+    { id: "CV-8840", claim: "MRI · lower back",      amt: "€ 1,140.00", p: "S. Ilic · POL-B902",    status: "partial",     t: "14:01" },
+    { id: "CV-8839", claim: "ER visit · chest pain", amt: "€ 2,280.00", p: "R. Costa · POL-A201",   status: "investigate", t: "14:01" },
+    { id: "CV-8838", claim: "Dental · root canal",   amt: "€ 680.00",   p: "M. Varga · POL-D440",   status: "approve",     t: "14:00" },
+    { id: "CV-8837", claim: "Lab work · bloods",     amt: "€ 94.50",    p: "T. Schmidt · POL-C191", status: "admin",       t: "14:00" },
+  ];
+  return (
+    <AppChrome title="inbox" accent="LIVE · 4 INCOMING">
+      <div style={{ display: "grid", gridTemplateColumns: "220px 1fr", minHeight: 520 }}>
+        <aside style={{ borderRight: "1px solid var(--line)", padding: 16, background: "rgba(11,11,12,.015)" }}>
+          <div className="mono" style={{ fontSize: 10, color: "var(--ink-4)", letterSpacing: ".08em", marginBottom: 12 }}>QUEUES</div>
+          {[["All claims",1284,true],["Needs review",12],["Investigate",3],["Auto-suggested",1269],["Drafts",0]].map(([l,c,a]) => (
+            <div key={l} style={{
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+              padding: "8px 10px", borderRadius: 8, fontSize: 13,
+              background: a ? "var(--ink)" : "transparent",
+              color: a ? "var(--paper)" : "var(--ink-2)", marginBottom: 2, cursor: "pointer",
+            }}>
+              <span>{l}</span>
+              <span className="mono" style={{ fontSize: 11, opacity: .6 }}>{c}</span>
+            </div>
+          ))}
+          <div style={{ marginTop: 24 }}>
+            <div className="mono" style={{ fontSize: 10, color: "var(--ink-4)", letterSpacing: ".08em", marginBottom: 12 }}>CLAIM TYPES</div>
+            {["Outpatient","Prescriptions","Lab & imaging","Specialist","ER","Dental"].map((l) => (
+              <div key={l} style={{ padding: "6px 10px", fontSize: 13, color: "var(--ink-3)" }}>• {l}</div>
+            ))}
+          </div>
+        </aside>
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 20px", borderBottom: "1px solid var(--line)" }}>
+            <input placeholder="Search by claim id, member, amount…" style={{
+              flex: 1, border: "1px solid var(--line)", padding: "8px 12px", borderRadius: 8, fontSize: 13, background: "white", fontFamily: "inherit",
+            }} readOnly />
+            <div className="chip"><span className="dot" /><span style={{ color: "var(--ink-2)" }}>Live</span></div>
+            <button className="btn btn-ghost" style={{ padding: "8px 12px", fontSize: 12 }}>Filter</button>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "110px 1fr 140px 180px 130px 50px", padding: "10px 20px", fontSize: 11, color: "var(--ink-4)", borderBottom: "1px solid var(--line)" }} className="mono">
+            <span>ID</span><span>CLAIM</span><span>AMOUNT</span><span>MEMBER · POLICY</span><span>VERDICT</span><span></span>
+          </div>
+          {rows.map((r, i) => (
+            <div key={r.id} style={{
+              display: "grid", gridTemplateColumns: "110px 1fr 140px 180px 130px 50px",
+              padding: "14px 20px", fontSize: 13, borderBottom: "1px solid var(--line)",
+              background: i === 0 ? "rgba(47,156,106,.04)" : "transparent",
+              alignItems: "center",
+            }}>
+              <span className="mono" style={{ color: "var(--ink-2)" }}>{r.id}</span>
+              <span style={{ color: "var(--ink)" }}>{r.claim}</span>
+              <span className="mono" style={{ color: "var(--ink)" }}>{r.amt}</span>
+              <span style={{ color: "var(--ink-3)", fontSize: 12 }}>{r.p}</span>
+              <span><StatusPill s={r.status} /></span>
+              <span className="mono" style={{ fontSize: 10, color: "var(--ink-4)" }}>{r.t}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </AppChrome>
+  );
+}
+
+function HL({ children, mono }) {
+  return (
+    <span className={mono ? "mono" : ""} style={{
+      background: "rgba(47,156,106,.12)", borderRadius: 3,
+      padding: "1px 4px", borderBottom: "1px solid rgba(47,156,106,.35)",
+    }}>
+      {children}
+    </span>
+  );
+}
+
+function ReasoningStream() {
+  const steps = [
+    { t: "Document integrity",  s: "3 files received · fatura fiskale, receta mjekësore, raporti mjekësor. NIPT valid · stamps & signatures present." },
+    { t: "Policy scope",        s: "Within territory · 312 days since start · waiting period cleared · € 2,840 of annual limit remaining." },
+    { t: "Line-item audit",     s: "Antibiotik Amoxicillin 500mg · covered at 100% · cited §4.2.1. Vizitë mjekësore · covered · cited §3.1." },
+    { t: "Clinical validation", s: "ICD J20.9 (acute bronchitis) · pre-existing CLEAR · treatment consistent · no exclusions triggered." },
+    { t: "Cross-match",         s: "Dates, amounts, provider, and member reconciled across all 3 documents. No discrepancies." },
+    { t: "Red flags",           s: "None detected. 14 heuristics evaluated." },
+    { t: "Verdict",             s: "APPROVE · € 842.00 · all line items covered." },
+  ];
+  const [shown, setShown] = useState(0);
+  useEffect(() => {
+    const id = setInterval(() => setShown((s) => (s < steps.length ? s + 1 : s)), 900);
+    return () => clearInterval(id);
+  }, []);
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      {steps.map((step, i) => {
+        const done = i < shown;
+        const active = i === shown;
+        return (
+          <div key={i} style={{
+            display: "flex", gap: 12, alignItems: "flex-start",
+            padding: "10px 12px", borderRadius: 10,
+            background: done ? "rgba(47,156,106,.05)" : "transparent",
+            border: "1px solid",
+            borderColor: done ? "rgba(47,156,106,.18)" : "var(--line)",
+            opacity: i <= shown ? 1 : 0.3,
+            transition: "all .45s",
+          }}>
+            <div style={{
+              width: 20, height: 20, borderRadius: 99, flexShrink: 0,
+              display: "grid", placeItems: "center",
+              background: done ? "var(--accent)" : "rgba(11,11,12,.06)",
+              marginTop: 2,
+            }}>
+              {done ? (
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
+                  <path d="M5 12l4 4L19 7" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              ) : active ? (
+                <div style={{ width: 6, height: 6, borderRadius: 99, background: "var(--ink-3)" }} />
+              ) : null}
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 13, color: "var(--ink)", fontWeight: 500 }}>
+                {step.t}{active && <span style={{ color: "var(--ink-3)", marginLeft: 6, animation: "caret-blink 1s infinite" }}>|</span>}
+              </div>
+              <div style={{ fontSize: 12, color: "var(--ink-3)", marginTop: 2 }}>{step.s}</div>
+            </div>
+          </div>
+        );
+      })}
+      {shown >= steps.length && (
+        <div style={{
+          marginTop: 8, padding: 16, borderRadius: 12,
+          background: "var(--ink)", color: "var(--paper)",
+          animation: "rise .6s ease both",
+        }}>
+          <div className="mono" style={{ fontSize: 10, color: "var(--ink-4)", letterSpacing: ".08em" }}>VERDICT</div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 4 }}>
+            <span className="serif" style={{ fontSize: 26 }}>Approve · €842.00</span>
+            <span className="mono" style={{ fontSize: 11, color: "var(--accent)" }}>98.4% conf.</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function DocAnalysisScreen() {
+  return (
+    <AppChrome title="claims / CV-8842" accent="ANALYZING">
+      <div style={{ display: "grid", gridTemplateColumns: "1.1fr 1fr", minHeight: 520 }}>
+        <div style={{ padding: 28, borderRight: "1px solid var(--line)", background: "rgba(11,11,12,.015)" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+            <span className="mono" style={{ fontSize: 11, color: "var(--ink-4)", letterSpacing: ".08em" }}>FATURA_FISKALE_8842.PDF · PAGE 1 OF 2</span>
+            <div style={{ display: "flex", gap: 8 }}>
+              <button className="btn btn-ghost" style={{ padding: "4px 10px", fontSize: 11 }}>−</button>
+              <button className="btn btn-ghost" style={{ padding: "4px 10px", fontSize: 11 }}>+</button>
+            </div>
+          </div>
+          <div style={{ background: "white", padding: 28, borderRadius: 8, border: "1px solid var(--line)", position: "relative", minHeight: 420 }}>
+            <div style={{ fontSize: 18, fontWeight: 600, marginBottom: 4 }}>Qendra Mjekësore Bul. Nënë Tereza</div>
+            <div style={{ fontSize: 11, color: "var(--ink-4)", marginBottom: 18 }}>Faturë fiskale · NR. 24-00842 · 19 Prill 2026</div>
+            <div style={{ borderBottom: "1px solid var(--line)", marginBottom: 14, paddingBottom: 14 }}>
+              <div style={{ fontSize: 12, color: "var(--ink-3)" }}>Pacienti</div>
+              <HL>Gjergj Fishta</HL>
+            </div>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, fontSize: 12, marginBottom: 16 }}>
+              <div>
+                <div style={{ color: "var(--ink-3)" }}>Shërbimi</div>
+                <div><HL>Vizitë mjekësore</HL> · ICD-10 <HL mono>J20.9</HL></div>
+              </div>
+              <div>
+                <div style={{ color: "var(--ink-3)" }}>Data e shërbimit</div>
+                <HL>19 Prill 2026</HL>
+              </div>
+              <div>
+                <div style={{ color: "var(--ink-3)" }}>NIPT</div>
+                <HL mono>K31502037L</HL>
+              </div>
+              <div>
+                <div style={{ color: "var(--ink-3)" }}>Polica</div>
+                <div><HL mono>C-247</HL></div>
+              </div>
+            </div>
+            <div style={{ borderTop: "1px solid var(--line)", paddingTop: 12, display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+              <span style={{ fontSize: 12, color: "var(--ink-3)" }}>TOTAL</span>
+              <div className="mono" style={{ fontSize: 18 }}><HL mono>€ 842.00</HL></div>
+            </div>
+          </div>
+        </div>
+        <div style={{ padding: 28 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+            <Mark size={14} />
+            <span className="mono" style={{ fontSize: 10, letterSpacing: ".08em", color: "var(--ink-4)" }}>CHECKVERSE REASONING</span>
+          </div>
+          <ReasoningStream />
+        </div>
+      </div>
+    </AppChrome>
+  );
+}
+
+function VerdictScreen() {
+  return (
+    <AppChrome title="claims / CV-8842 / verdict" accent="AUDITED">
+      <div style={{ padding: 32, minHeight: 520 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 28 }}>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+              <span className="mono" style={{ fontSize: 11, color: "var(--ink-4)" }}>CLAIM CV-8842</span>
+              <StatusPill s="verified" />
+            </div>
+            <h3 className="serif" style={{ fontSize: 36, margin: "0 0 16px 0", letterSpacing: "-0.02em", lineHeight: 1.05 }}>
+              Approved · <span className="italic">€ 842.00</span>
+            </h3>
+            <p style={{ color: "var(--ink-3)", fontSize: 14, lineHeight: 1.5, maxWidth: 540, margin: "0 0 24px 0" }}>
+              Vizitë mjekësore me receta. All line items cited against Policy C-247. NIPT valid, stamps present, no discrepancies across 3 documents. Pre-existing CLEAR. Recommending auto-approval.
+            </p>
+            <div style={{ borderTop: "1px solid var(--line)", paddingTop: 20 }}>
+              <div className="mono" style={{ fontSize: 10, color: "var(--ink-4)", letterSpacing: ".08em", marginBottom: 14 }}>AUDIT LOG</div>
+              {[
+                ["14:02:18.421","auto","3 documents ingested · compressed 2 of 3"],
+                ["14:02:18.680","auto","Document integrity · NIPT & stamps verified"],
+                ["14:02:18.844","auto","Policy C-247 matched · waiting period cleared"],
+                ["14:02:19.102","auto","Line-item audit · 4 of 4 covered · §4.2.1, §3.1"],
+                ["14:02:19.290","auto","Clinical validation · ICD J20.9 · pre-existing CLEAR"],
+                ["14:02:19.520","auto","Cross-match · no discrepancies across 3 docs"],
+                ["14:02:19.840","auto","Verdict: APPROVE · € 842.00"],
+                ["14:02:21.103","m.okafor","Reviewed and finalized"],
+              ].map(([t,who,what],i) => (
+                <div key={i} style={{ display: "grid", gridTemplateColumns: "120px 80px 1fr", padding: "8px 0", borderBottom: "1px solid var(--line)", fontSize: 12 }}>
+                  <span className="mono" style={{ color: "var(--ink-4)" }}>{t}</span>
+                  <span className="mono" style={{ color: who === "auto" ? "var(--ink-3)" : "var(--accent-ink)" }}>{who}</span>
+                  <span style={{ color: "var(--ink-2)" }}>{what}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <aside>
+            <div className="card" style={{ padding: 18, marginBottom: 12 }}>
+              <div className="mono" style={{ fontSize: 10, color: "var(--ink-4)", letterSpacing: ".08em", marginBottom: 12 }}>CONFIDENCE</div>
+              <div className="serif" style={{ fontSize: 44, lineHeight: 1 }}>98.4<span className="italic" style={{ fontSize: 28, color: "var(--ink-3)" }}>%</span></div>
+              <div className="bar" style={{ marginTop: 10 }}><span style={{ width: "98.4%" }} /></div>
+              <div style={{ fontSize: 11, color: "var(--ink-4)", marginTop: 8 }}>Policy match · fraud signals · fiscal check · duplicate detection</div>
+            </div>
+            <div className="card" style={{ padding: 18 }}>
+              <div className="mono" style={{ fontSize: 10, color: "var(--ink-4)", letterSpacing: ".08em", marginBottom: 12 }}>NEXT ACTIONS</div>
+              <button className="btn btn-primary" style={{ width: "100%", justifyContent: "center", marginBottom: 8 }}>Approve &amp; close</button>
+              <button className="btn btn-ghost" style={{ width: "100%", justifyContent: "center", marginBottom: 8 }}>Send to human review</button>
+              <button className="btn btn-ghost" style={{ width: "100%", justifyContent: "center", color: "var(--warn)", borderColor: "rgba(183,84,30,.3)" }}>Decline with reason</button>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </AppChrome>
+  );
+}
+
+function ProductShowcase() {
+  const [tab, setTab] = useState(0);
+  const tabs = [
+    { k: "inbox",   t: "Claims inbox" },
+    { k: "doc",     t: "Document analysis" },
+    { k: "verdict", t: "Verdict & audit" },
+  ];
+  return (
+    <section id="product" style={{ padding: "120px 0", position: "relative", overflow: "hidden" }}>
+      <div className="wrap">
+        <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1fr)", gap: 48, alignItems: "start", marginBottom: 48 }} className="two-col">
+          <div>
+            <p className="mono" style={{ fontSize: 11, letterSpacing: ".1em", color: "var(--ink-4)", margin: "0 0 12px 0" }}>03 · THE PRODUCT</p>
+            <h2 className="serif reveal" style={{ fontSize: "clamp(36px,4.8vw,60px)", margin: 0, lineHeight: 1.02, letterSpacing: "-0.02em" }}>
+              A copilot, not a replacement.<br/>
+              <span className="italic">Every verdict</span> is yours to keep or override.
+            </h2>
+          </div>
+          <p className="reveal" style={{ color: "var(--ink-3)", fontSize: 17, lineHeight: 1.5, maxWidth: 480 }}>
+            Your agent uploads the documents. Checkverse returns a structured audit with seven checks, a verdict, and citations back to the exact policy clause. The agent reviews, tweaks, and finalizes. Every override teaches the system.
+          </p>
+        </div>
+        <div style={{ display: "flex", gap: 6, marginBottom: 20, borderBottom: "1px solid var(--line)", paddingBottom: 14 }}>
+          {tabs.map((t, i) => (
+            <button key={t.k} className="tab-btn" data-active={tab === i} onClick={() => setTab(i)}>
+              <span className="mono" style={{ fontSize: 10, opacity: .55, marginRight: 8 }}>{String(i+1).padStart(2,"0")}</span>
+              {t.t}
+            </button>
+          ))}
+          <div style={{ flex: 1 }} />
+          <button className="tab-btn" onClick={() => setTab((tab + 1) % 3)} style={{ color: "var(--ink-3)" }}>Next →</button>
+        </div>
+        <div style={{ position: "relative", minHeight: 560 }}>
+          {[<InboxScreen />, <DocAnalysisScreen />, <VerdictScreen />].map((screen, i) => (
+            <div key={i} style={{
+              opacity: tab === i ? 1 : 0,
+              transform: tab === i ? "translateY(0)" : "translateY(10px)",
+              transition: "all .45s",
+              position: tab === i ? "relative" : "absolute",
+              inset: tab === i ? "auto" : 0,
+              pointerEvents: tab === i ? "auto" : "none",
+            }}>
+              {screen}
+            </div>
+          ))}
+        </div>
+      </div>
+      <style>{`@media (max-width: 900px) { .two-col { grid-template-columns: 1fr !important; } }`}</style>
+    </section>
+  );
+}
+
+function HowItWorks() {
+  const [step, setStep] = useState(0);
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!ref.current) return;
+    let intervalId = null, started = false;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting && !started) {
+          started = true;
+          let i = 0;
+          intervalId = setInterval(() => {
+            i = i + 1;
+            if (i > 3) { clearInterval(intervalId); return; }
+            setStep(i);
+          }, 2400);
+        }
+      });
+    }, { threshold: 0.3 });
+    io.observe(ref.current);
+    return () => { if (intervalId) clearInterval(intervalId); io.disconnect(); };
+  }, []);
+
+  const steps = [
+    { n: "01", t: "Upload",  d: "Agents drop in fatura fiskale, receta mjekësore, lab results, phone photos. PDF, JPG, PNG, HEIC – up to 10 MB each." },
+    { n: "02", t: "Prep",    d: "Files compressed if they exceed Gemini's limits. HEIC → JPEG, scanned PDFs re-encoded, originals preserved for audit." },
+    { n: "03", t: "Audit",   d: "Checkverse runs the four-phase audit: document integrity → line-item audit → clinical validation → cross-match." },
+    { n: "04", t: "Verdict", d: "APPROVE, PARTIAL_DENY, DENY, INVESTIGATE, ADMIN_HOLD, or INCOMPLETE. Every line item cites a specific policy clause." },
+  ];
+
+  return (
+    <section id="how" ref={ref} style={{ padding: "120px 0", borderTop: "1px solid var(--line)" }}>
+      <div className="wrap">
+        <div style={{ maxWidth: 640, marginBottom: 56 }}>
+          <p className="mono" style={{ fontSize: 11, letterSpacing: ".1em", color: "var(--ink-4)", margin: "0 0 12px 0" }}>04 · HOW IT WORKS</p>
+          <h2 className="serif reveal" style={{ fontSize: "clamp(36px,4.8vw,60px)", margin: 0, lineHeight: 1.02, letterSpacing: "-0.02em" }}>
+            Four steps. <span className="italic">One afternoon</span> to set up.
+          </h2>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 0, position: "relative" }} className="steps-grid">
+          <div style={{
+            position: "absolute", left: 0, right: 0, bottom: 0, height: 2,
+            background: "rgba(11,11,12,.08)", zIndex: 1, pointerEvents: "none",
+          }}>
+            <div style={{
+              position: "absolute", left: 0, top: 0, bottom: 0,
+              width: `${((step + 1) / steps.length) * 100}%`,
+              background: "var(--accent)", transition: "width 2.4s linear",
+            }} />
+            <div style={{
+              position: "absolute",
+              left: `${((step + 0.5) / steps.length) * 100}%`,
+              top: "50%", width: 10, height: 10, borderRadius: 99,
+              background: "var(--accent)",
+              transform: "translate(-50%,-50%)",
+              boxShadow: "0 0 0 5px rgba(47,156,106,.18), 0 0 0 10px rgba(47,156,106,.08)",
+              transition: "left 2.4s linear",
+            }} />
+          </div>
+          {steps.map((s, i) => (
+            <div key={s.n} onMouseEnter={() => setStep(i)} style={{
+              padding: "36px 28px 40px",
+              borderLeft: i === 0 ? "none" : "1px solid var(--line)",
+              background: step === i ? "var(--paper)" : "transparent",
+              transition: "background .4s ease",
+              cursor: "pointer", position: "relative",
+            }}>
+              <div className="mono" style={{ fontSize: 11, color: step >= i ? "var(--accent-ink)" : "var(--ink-4)", letterSpacing: ".08em", marginBottom: 16, transition: "color .4s" }}>
+                {s.n}
+              </div>
+              <div className="serif" style={{ fontSize: 32, lineHeight: 1, letterSpacing: "-0.02em", marginBottom: 10 }}>{s.t}</div>
+              <div style={{ fontSize: 13, color: "var(--ink-3)", lineHeight: 1.5 }}>{s.d}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      <style>{`@media (max-width: 900px) { .steps-grid { grid-template-columns: 1fr 1fr !important; } }`}</style>
+    </section>
+  );
+}
+
+function Features() {
+  const feats = [
+    { k: "Document check",     d: "Are all required documents present? NIPT, fiscal codes, stamps, signatures — verified automatically on every submission.", meta: "7 requirements" },
+    { k: "Policy scope",       d: "Coverage territory, waiting periods, annual limits remaining — all reconciled against the right version of the member's policy.", meta: "Versioned" },
+    { k: "Line items",         d: "Every claimed item tagged with approved or denied amount, coverage status, and a citation back to the exact policy clause.", meta: "Clause-level" },
+    { k: "Clinical analysis",  d: "Diagnoses, pre-existing condition checks, treatment appropriateness — evaluated for clinical coherence, not just paperwork.", meta: "Medical coding" },
+    { k: "Cross-match",        d: "Dates, amounts, provider, and patient details reconciled across every document in the submission. Inconsistencies surface immediately.", meta: "Across docs" },
+    { k: "Red flags",          d: "Anything suspicious surfaced with reasoning — never silently. Your team decides whether to investigate, always.", meta: "Reasoned" },
+    { k: "Verdict & override", d: "APPROVE, PARTIAL_DENY, DENY, INVESTIGATE, ADMIN_HOLD, or INCOMPLETE — each reviewable, overridable, and fed back into the system.", meta: "Copilot" },
+    { k: "Audit trail",        d: "Every extraction, decision, and override — timestamped and attributable. Export in your regulator's format in one click.", meta: "Regulator-ready" },
+  ];
+
+  return (
+    <section id="features" style={{ padding: "120px 0", borderTop: "1px solid var(--line)" }}>
+      <div className="wrap">
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 48, alignItems: "end", marginBottom: 48 }} className="two-col">
+          <div>
+            <p className="mono" style={{ fontSize: 11, letterSpacing: ".1em", color: "var(--ink-4)", margin: "0 0 12px 0" }}>05 · CAPABILITIES</p>
+            <h2 className="serif reveal" style={{ fontSize: "clamp(36px,4.8vw,60px)", margin: 0, lineHeight: 1.02, letterSpacing: "-0.02em" }}>
+              Eight things your agents <span className="italic">no longer do by hand.</span>
+            </h2>
+          </div>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", borderTop: "1px solid var(--line)" }} className="feat-grid">
+          {feats.map((f, i) => <FeatureCell key={f.k} f={f} i={i} total={feats.length} />)}
+        </div>
+      </div>
+      <style>{`
+        @media (max-width: 900px) { .feat-grid { grid-template-columns: 1fr 1fr !important; } }
+        @media (max-width: 560px) { .feat-grid { grid-template-columns: 1fr !important; } }
+      `}</style>
+    </section>
+  );
+}
+
+function FeatureCell({ f, i, total }) {
+  const [hover, setHover] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}
+      style={{
+        padding: "32px 28px",
+        borderRight: (i+1) % 3 === 0 ? "none" : "1px solid var(--line)",
+        borderBottom: i < total - 3 ? "1px solid var(--line)" : "none",
+        background: hover ? "var(--paper)" : "transparent",
+        transition: "background .3s", cursor: "default", minHeight: 230,
+      }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+        <span className="mono" style={{ fontSize: 11, color: "var(--ink-4)", letterSpacing: ".08em" }}>{String(i+1).padStart(2,"0")}</span>
+        <span className="mono" style={{ fontSize: 10, color: "var(--accent-ink)", background: "rgba(47,156,106,.1)", padding: "3px 8px", borderRadius: 99 }}>{f.meta}</span>
+      </div>
+      <div className="serif" style={{ fontSize: 28, letterSpacing: "-0.02em", lineHeight: 1.05, marginBottom: 12 }}>{f.k}</div>
+      <div style={{ fontSize: 13, color: "var(--ink-3)", lineHeight: 1.5 }}>{f.d}</div>
+    </div>
+  );
+}
+
+function UseCases() {
+  const [tab, setTab] = useState(0);
+  const cases = [
+    {
+      k: "Outpatient", tag: "Visits · diagnostics · specialists",
+      stats: [["3.2s","median verdict"],["94%","auto-approved"],["+2.1×","fraud catch"]],
+      tasks: ["Receipt & fiscal-code validation","ICD-10 coherence check","Specialist referral matching","Waiting-period enforcement","Annual-limit reconciliation"],
+    },
+    {
+      k: "Prescriptions", tag: "Pharmacy receipts · repeat scripts",
+      stats: [["2.4s","median verdict"],["96%","auto-approved"],["+2.8×","fraud catch"]],
+      tasks: ["Pharmacy receipt extraction","Drug-to-diagnosis matching","Repeat prescription patterns","Formulary coverage check","Duplicate claim detection"],
+    },
+    {
+      k: "Inpatient", tag: "Hospital stays · surgeries · ER",
+      stats: [["6.8s","median verdict"],["81%","auto-approved"],["+3.4×","fraud catch"]],
+      tasks: ["Multi-document reconciliation","DRG & procedure coding","Length-of-stay appropriateness","Pre-authorization matching","Third-party subrogation flags"],
+    },
+  ];
+  const c = cases[tab];
+
+  return (
+    <section id="cases" style={{ padding: "120px 0", borderTop: "1px solid var(--line)" }}>
+      <div className="wrap">
+        <div style={{ maxWidth: 720, marginBottom: 48 }}>
+          <p className="mono" style={{ fontSize: 11, letterSpacing: ".1em", color: "var(--ink-4)", margin: "0 0 12px 0" }}>06 · USE CASES</p>
+          <h2 className="serif reveal" style={{ fontSize: "clamp(36px,4.8vw,60px)", margin: 0, lineHeight: 1.02, letterSpacing: "-0.02em" }}>
+            Every type of health claim. <span className="italic">Read the same day.</span>
+          </h2>
+        </div>
+        <div style={{ display: "flex", gap: 8, marginBottom: 24, borderBottom: "1px solid var(--line)", paddingBottom: 14 }}>
+          {cases.map((x, i) => (
+            <button key={x.k} className="tab-btn" data-active={tab === i} onClick={() => setTab(i)}>
+              {x.k} claims
+            </button>
+          ))}
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, alignItems: "start" }} className="two-col">
+          <div>
+            <div className="mono" style={{ fontSize: 11, color: "var(--ink-4)", letterSpacing: ".08em", marginBottom: 8 }}>{c.tag.toUpperCase()}</div>
+            <h3 className="serif" style={{ fontSize: 44, margin: "0 0 28px 0", letterSpacing: "-0.02em", lineHeight: 1 }}>
+              {c.k} <span className="italic">claims</span>
+            </h3>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 0, borderTop: "1px solid var(--line)", borderBottom: "1px solid var(--line)", marginBottom: 24 }}>
+              {c.stats.map(([v,l], i) => (
+                <div key={i} style={{ padding: "20px 0", borderLeft: i === 0 ? "none" : "1px solid var(--line)", paddingLeft: i === 0 ? 0 : 20 }}>
+                  <div className="serif" style={{ fontSize: 32, lineHeight: 1, letterSpacing: "-0.02em" }}>{v}</div>
+                  <div style={{ fontSize: 11, color: "var(--ink-3)", marginTop: 6 }}>{l}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {c.tasks.map((t, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 12, fontSize: 14, color: "var(--ink-2)" }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
+                    <path d="M5 12l4 4L19 7" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  {t}
+                </div>
+              ))}
+            </div>
+          </div>
+          <CaseVisual tab={tab} />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CaseVisual({ tab }) {
+  const data = [
+    { title: "Today · outpatient",       rows: [["GP visits",284,"var(--accent)"],["Diagnostics & labs",186,"var(--ink-2)"],["Specialist referrals",96,"var(--ink-3)"],["Imaging",41,"var(--warn)"]] },
+    { title: "Today · prescriptions",    rows: [["Acute scripts",412,"var(--accent)"],["Repeat scripts",238,"var(--ink-2)"],["Specialty drugs",47,"var(--ink-3)"],["Flagged duplicates",9,"var(--warn)"]] },
+    { title: "Today · inpatient & ER",   rows: [["ER visits",64,"var(--accent)"],["Planned admissions",28,"var(--ink-2)"],["Day surgeries",19,"var(--ink-3)"],["Length-of-stay flags",6,"var(--warn)"]] },
+  ][tab];
+  const max = Math.max(...data.rows.map(r => r[1]));
+  return (
+    <div className="card" style={{ padding: 28 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+        <div>
+          <div className="mono" style={{ fontSize: 10, color: "var(--ink-4)", letterSpacing: ".08em" }}>DASHBOARD</div>
+          <div className="serif" style={{ fontSize: 22, marginTop: 4 }}>{data.title}</div>
+        </div>
+        <div className="chip"><span className="dot" /><span style={{ color: "var(--ink-2)" }}>Live</span></div>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+        {data.rows.map(([label,v,color]) => (
+          <div key={label}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13, marginBottom: 6 }}>
+              <span style={{ color: "var(--ink-2)" }}>{label}</span>
+              <span className="mono" style={{ color: "var(--ink-3)" }}>{v}</span>
+            </div>
+            <div style={{ height: 6, background: "rgba(11,11,12,.06)", borderRadius: 99, overflow: "hidden" }}>
+              <div style={{ width: `${(v/max)*100}%`, height: "100%", background: color, transition: "width .6s" }} />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div style={{ marginTop: 28, paddingTop: 20, borderTop: "1px solid var(--line)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span className="mono" style={{ fontSize: 11, color: "var(--ink-4)" }}>Last 24h</span>
+        <span style={{ fontSize: 13, color: "var(--ink-2)" }}>
+          <span className="serif" style={{ fontSize: 20 }}>{data.rows.reduce((a,r) => a+r[1], 0)}</span>
+          <span style={{ color: "var(--ink-3)" }}> claims processed</span>
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function MiniDemo() {
+  const [phase, setPhase] = useState("idle");
+  const [pct, setPct] = useState(0);
+
+  const run = () => {
+    if (phase !== "idle" && phase !== "done") return;
+    setPhase("uploading"); setPct(0);
+    const uploadInterval = setInterval(() => {
+      setPct(p => {
+        if (p >= 100) { clearInterval(uploadInterval); setTimeout(() => setPhase("analyzing"), 500); return 100; }
+        return p + 3;
+      });
+    }, 100);
+    setTimeout(() => setPhase("done"), 3800 + 9000);
+  };
+
+  const reset = () => { setPhase("idle"); setPct(0); };
+
+  return (
+    <section id="demo" style={{ padding: "120px 0", borderTop: "1px solid var(--line)", background: "var(--bg-2)" }}>
+      <div className="wrap">
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }} className="two-col">
+          <div>
+            <p className="mono" style={{ fontSize: 11, letterSpacing: ".1em", color: "var(--ink-4)", margin: "0 0 12px 0" }}>07 · TRY IT</p>
+            <h2 className="serif reveal" style={{ fontSize: "clamp(36px,4.8vw,60px)", margin: 0, lineHeight: 1.02, letterSpacing: "-0.02em" }}>
+              Watch it work. <span className="italic">Press the button.</span>
+            </h2>
+            <p style={{ color: "var(--ink-3)", fontSize: 16, margin: "20px 0 28px 0", lineHeight: 1.5, maxWidth: 460 }}>
+              This is a scripted run against a sample medical invoice, with realistic timings. Real claims take about the same time.
+            </p>
+            <div style={{ display: "flex", gap: 10 }}>
+              <button onClick={phase === "done" ? reset : run} className="btn btn-primary">
+                {phase === "idle" && "▶ Run sample claim"}
+                {phase === "uploading" && "Uploading…"}
+                {phase === "analyzing" && "Analyzing…"}
+                {phase === "done" && "↺ Run again"}
+              </button>
+              {phase === "done" && <button onClick={reset} className="btn btn-ghost">Reset</button>}
+            </div>
+          </div>
+          <div className="card" style={{ padding: 28, minHeight: 360 }}>
+            <DemoInner phase={phase} pct={pct} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function DemoInner({ phase, pct }) {
+  if (phase === "idle") {
+    return (
+      <div style={{ height: 320, display: "grid", placeItems: "center", border: "1.5px dashed var(--line-2)", borderRadius: 12, color: "var(--ink-3)", fontSize: 14 }}>
+        <div style={{ textAlign: "center" }}>
+          <div style={{ fontSize: 32, marginBottom: 10 }}>↑</div>
+          <div style={{ fontSize: 13 }}>Press{" "}
+            <span className="mono" style={{ background: "rgba(11,11,12,.05)", padding: "2px 8px", borderRadius: 4 }}>Run</span>
+            {" "}to upload a sample invoice
+          </div>
+        </div>
+      </div>
+    );
+  }
+  if (phase === "uploading") {
+    return (
+      <div>
+        <div className="mono" style={{ fontSize: 11, color: "var(--ink-4)", marginBottom: 12, letterSpacing: ".08em" }}>UPLOADING INVOICE_8842.PDF</div>
+        <div className="bar" style={{ height: 8 }}><span style={{ width: `${pct}%` }} /></div>
+        <div style={{ display: "flex", justifyContent: "space-between", marginTop: 10, fontSize: 11, color: "var(--ink-4)" }} className="mono">
+          <span>{pct}%</span><span>842 KB</span>
+        </div>
+        <div style={{ marginTop: 18, padding: 14, border: "1px solid var(--line)", borderRadius: 8, background: "white" }}>
+          <div className="mono" style={{ fontSize: 10, color: "var(--ink-4)", marginBottom: 8 }}>PREVIEW</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+            {[90,60,75,40,80,55].map((w, i) => (
+              <div key={i} style={{ height: 4, width: `${w}%`, background: "rgba(11,11,12,.1)", borderRadius: 2 }} />
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+  if (phase === "analyzing") {
+    return (
+      <div>
+        <div className="mono" style={{ fontSize: 11, color: "var(--accent-ink)", marginBottom: 12, letterSpacing: ".08em" }}>✓ ANALYZING</div>
+        <ReasoningStream />
+      </div>
+    );
+  }
+  return (
+    <div>
+      <div className="mono" style={{ fontSize: 11, color: "var(--accent-ink)", letterSpacing: ".08em", marginBottom: 12 }}>✓ VERDICT READY</div>
+      <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 14 }}>
+        <span className="serif" style={{ fontSize: 48, lineHeight: 1 }}>Approve</span>
+        <span className="serif italic" style={{ fontSize: 32, color: "var(--ink-3)" }}>· € 842</span>
+      </div>
+      <div style={{ fontSize: 13, color: "var(--ink-3)", marginBottom: 20, lineHeight: 1.5 }}>
+        Invoice matches policy C-247. Provider verified via national registry. No fraud signals detected across 14 evaluators. Confidence{" "}
+        <span className="mono" style={{ color: "var(--ink)" }}>98.4%</span>.
+      </div>
+      <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+        {["Policy matched","Provider verified","Fiscal code valid","No duplicate","Fraud: clear"].map(t => (
+          <span key={t} className="mono" style={{ fontSize: 10, padding: "4px 8px", background: "rgba(47,156,106,.1)", color: "var(--accent-ink)", borderRadius: 99 }}>✓ {t}</span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function Security() {
+  const items = [
+    { t: "End-to-end encryption",   d: "AES-256 at rest, TLS 1.3 in transit. Keys rotated monthly." },
+    { t: "Multi-tenant isolation",  d: "Cryptographic separation. One breach does not cascade." },
+    { t: "Full audit trail",        d: "Every action logged, timestamped, signed, and retrievable in your regulator's format." },
+    { t: "Regulatory compliance",   d: "SOC 2 Type II, HIPAA ready, ISO 27001. We also pass your internal audit." },
+  ];
+  return (
+    <section id="security" style={{ padding: "120px 0", borderTop: "1px solid var(--line)" }}>
+      <div className="wrap">
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "start" }} className="two-col">
+          <div>
+            <p className="mono" style={{ fontSize: 11, letterSpacing: ".1em", color: "var(--ink-4)", margin: "0 0 12px 0" }}>08 · SECURITY</p>
+            <h2 className="serif reveal" style={{ fontSize: "clamp(36px,4.8vw,60px)", margin: 0, lineHeight: 1.02, letterSpacing: "-0.02em" }}>
+              Boring on purpose.<br/><span className="italic">Reassuringly so.</span>
+            </h2>
+            <p style={{ color: "var(--ink-3)", fontSize: 16, lineHeight: 1.5, margin: "24px 0", maxWidth: 460 }}>
+              Built by a team that's shipped software for banks, hospitals, and telecoms. We know what your security team will ask — we've already answered it.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 20, marginTop: 32 }}>
+              {items.map(x => (
+                <div key={x.t} style={{ display: "grid", gridTemplateColumns: "18px 1fr", gap: 14 }}>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" style={{ marginTop: 4 }}>
+                    <path d="M5 12l4 4L19 7" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <div>
+                    <div style={{ fontSize: 15, color: "var(--ink)", fontWeight: 500 }}>{x.t}</div>
+                    <div style={{ fontSize: 13, color: "var(--ink-3)", marginTop: 3, lineHeight: 1.5 }}>{x.d}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <div className="card" style={{ padding: 0, overflow: "hidden" }}>
+              <div style={{ padding: "20px 24px", borderBottom: "1px solid var(--line)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2L3 7v6c0 5 4 9 9 10 5-1 9-5 9-10V7l-9-5z" stroke="var(--accent)" strokeWidth="1.8" fill="rgba(47,156,106,0.08)"/>
+                  </svg>
+                  <span className="serif" style={{ fontSize: 20 }}>Security posture</span>
+                </div>
+                <span className="mono" style={{ fontSize: 10, color: "var(--accent-ink)", background: "rgba(47,156,106,.1)", padding: "3px 8px", borderRadius: 99 }}>VERIFIED</span>
+              </div>
+              {[
+                ["Data encryption",    "AES-256 · TLS 1.3"],
+                ["Access control",     "RBAC + SSO · SAML 2.0"],
+                ["Audit logging",      "Full · Tamper-evident"],
+                ["Data isolation",     "Per-tenant · Cryptographic"],
+                ["Certifications",     "SOC 2 · HIPAA · ISO 27001"],
+                ["Penetration test",   "Quarterly · external"],
+                ["Data residency",     "EU · US · configurable"],
+              ].map(([k,v], i) => (
+                <div key={k} style={{ display: "flex", justifyContent: "space-between", padding: "14px 24px", borderTop: i === 0 ? "none" : "1px solid var(--line)", fontSize: 13 }}>
+                  <span style={{ color: "var(--ink-3)" }}>{k}</span>
+                  <span className="mono" style={{ color: "var(--ink-2)" }}>{v}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function CTA() {
+  return (
+    <section id="contact" style={{ padding: "120px 0", borderTop: "1px solid var(--line)", position: "relative", overflow: "hidden" }}>
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none",
+        background: "radial-gradient(ellipse 70% 70% at 50% 50%, rgba(47,156,106,.08), transparent 60%)",
+      }} />
+      <div className="wrap" style={{ position: "relative", textAlign: "center" }}>
+        <Mark size={36} />
+        <h2 className="serif" style={{ fontSize: "clamp(48px,7vw,104px)", margin: "28px 0 20px 0", letterSpacing: "-0.03em", lineHeight: 1 }}>
+          Close more claims.<br/><span className="italic">Argue about fewer.</span>
+        </h2>
+        <p style={{ color: "var(--ink-3)", fontSize: 18, maxWidth: 540, margin: "0 auto 40px auto", lineHeight: 1.5 }}>
+          Twenty minutes is all we need to show you what auditing looks like when the queue stays empty.
+        </p>
+        <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
+          <a href="mailto:hello@reverse.wtf?subject=Checkverse%20Demo%20Request" className="btn btn-primary" style={{ padding: "14px 22px", fontSize: 15 }}>
+            Book a demo →
+          </a>
+          <a href="https://app.checkverse.io/dashboard" className="btn btn-ghost" style={{ padding: "14px 22px", fontSize: 15 }}>
+            Sign in
+          </a>
+        </div>
+        <div style={{ display: "flex", gap: 24, justifyContent: "center", alignItems: "center", marginTop: 48, color: "var(--ink-4)", fontSize: 12 }} className="mono">
+          <span>NO SETUP FEES</span>
+          <span style={{ width: 3, height: 3, background: "var(--ink-4)", borderRadius: 99 }} />
+          <span>2-WEEK PILOT</span>
+          <span style={{ width: 3, height: 3, background: "var(--ink-4)", borderRadius: 99 }} />
+          <span>KEEP YOUR TOOLS</span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer style={{ padding: "48px 0 32px 0", borderTop: "1px solid var(--line)" }}>
+      <div className="wrap">
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr", gap: 40, marginBottom: 56 }} className="footer-grid">
+          <div>
+            <Wordmark size={22} />
+            <p style={{ color: "var(--ink-3)", fontSize: 13, marginTop: 16, maxWidth: 280, lineHeight: 1.5 }}>
+              Claims auditing, settled in seconds. Built by <a className="ulink" href="https://reverse.wtf">Reverse</a>.
+            </p>
+          </div>
+          {[
+            ["Product",  [["Features","#features"],["How it works","#how"],["Use cases","#cases"],["Security","#security"],["Try the demo","#demo"]]],
+            ["Company",  [["About","#"],["Careers","#"],["Contact","#contact"]]],
+            ["Legal",    [["Privacy","#"],["Terms","#"],["DPA","#"]]],
+            ["Connect",  [["Sign in →","https://app.checkverse.io/dashboard"],["hello@reverse.wtf","mailto:hello@reverse.wtf"]]],
+          ].map(([title, links]) => (
+            <div key={title}>
+              <div className="mono" style={{ fontSize: 10, color: "var(--ink-4)", letterSpacing: ".08em", marginBottom: 14 }}>{String(title).toUpperCase()}</div>
+              <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 10 }}>
+                {links.map(([l, h]) => (
+                  <li key={l}>
+                    <a href={h} style={{ fontSize: 13, color: "var(--ink-2)", textDecoration: "none" }}
+                       onMouseEnter={(e) => e.currentTarget.style.color = "var(--ink)"}
+                       onMouseLeave={(e) => e.currentTarget.style.color = "var(--ink-2)"}>
+                      {l}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ padding: "40px 0 16px", borderTop: "1px solid var(--line)", overflow: "hidden" }}>
+          <div className="serif" style={{
+            fontSize: "clamp(80px,18vw,260px)",
+            lineHeight: 0.9, letterSpacing: "-0.04em", color: "var(--ink)",
+            margin: 0, textAlign: "left", whiteSpace: "nowrap",
+          }}>
+            Check<span className="italic" style={{ color: "var(--ink-3)" }}>verse</span><span style={{ color: "var(--accent)" }}>.</span>
+          </div>
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 20, fontSize: 12, color: "var(--ink-4)", borderTop: "1px solid var(--line)", flexWrap: "wrap", gap: 12 }} className="mono">
+          <span>© 2026 CHECKVERSE · A REVERSE TECHNOLOGY PRODUCT</span>
+          <span>CHECKVERSE.IO</span>
+        </div>
+      </div>
+      <style>{`@media (max-width: 900px) { .footer-grid { grid-template-columns: 1fr 1fr !important; } }`}</style>
+    </footer>
+  );
+}
+
+function App() {
+  useReveal();
+  return (
+    <>
+      <Nav />
+      <main>
+        <Hero />
+        <TrustRow />
+        <Stats />
+        <ProductShowcase />
+        <HowItWorks />
+        <Features />
+        <UseCases />
+        <MiniDemo />
+        <Security />
+        <CTA />
+      </main>
+      <Footer />
+    </>
+  );
+}
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />);
+</script>
 </body>
 </html>
